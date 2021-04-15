@@ -7,11 +7,14 @@ import * as EmailValidator from "email-validator";
 import {auth, db} from "../firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection} from "react-firebase-hooks/firestore";
+import ChatItem from "./ChatItem";
+
 
 
 const Sidebar = () => {
 
     const [user] = useAuthState(auth)
+   
     const userChatRef = db.collection("chats").where("users", "array-contains", user.email)
     const [chatsSnapshot] = useCollection(userChatRef)
 
@@ -36,7 +39,7 @@ const Sidebar = () => {
     return (
         <Container>
             <Header>
-                <UserAvater onClick={()=> auth.signOut()} />
+                <UserAvater src={user.photUrl} onClick={()=> auth.signOut()} />
                 <IconsContainer>
                     <IconButton>
                         <ChatIcon />
@@ -54,11 +57,9 @@ const Sidebar = () => {
 
             <SidebarButton onClick={createChat}>Start a new chat</SidebarButton>
 
-            {
-                chatsShapshot?.doc.map((chat)=> (
-                    <Chat key={chat.id} id={chat.id} user={chat.data().users}/>
-                ))
-            }
+            {chatsSnapshot?.docs.map((chat) => (
+                    <ChatItem key={chat.id} id={chat.id} users={chat.data().users}/>
+                ))}
 
         </Container>
     )
@@ -67,6 +68,19 @@ const Sidebar = () => {
 export default Sidebar;
 
 const Container = styled.div`
+    flex: .45;
+    border-right: 1px solid whitesmoke;
+    height: 100vh;
+    min-width: 300px;
+    max-width: 500px;
+    overflow-y: scroll;
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 `;
 
 const Header = styled.div`
