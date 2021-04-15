@@ -4,12 +4,13 @@ import {auth, provider} from "../firebase"
 
 const Login = () => {
 
-    
+
     const signIn = () => {
         auth.signInWithPopup(provider).catch(alert)
     }
 
-
+ 
+    
 
     return (
         <Container>
