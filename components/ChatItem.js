@@ -21,7 +21,7 @@ const ChatItem = ({id, users}) => {
     return ( 
     <Container onClick={enterChat}>
         {recipient 
-        ? (<UserAvatar src={recipient?.photoUrl}/>)
+        ? (<UserAvatar src={recipient?.photoURL}/>)
         :(<UserAvatar>{recipientEmail[0]}</UserAvatar>)}
         <p>{recipientEmail}</p>
     </Container>)
